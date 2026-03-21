@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App - LearnCodeEasy</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" placeholder="Enter city..." id="cityInput">
+            <button onclick="getWeather()">Search</button>
+        </div>
+        <div class="weather">
+            <div class="weather-icon">
+                <img src="./images/sun.png" id="weatherIcon">
+            </div>
+            <div class="temp" id="temp">--°C</div>
+            <div class="city" id="city">city</div>
+
+            <div class="details">
+                <div class="col">
+                    <img src="./images/humidity.png" alt="humidity">
+                    <div class="humidity" id="humidity">--%</div>
+                </div>
+                <div class="col">
+                    <img src="./images/wind.png" alt="wind">
+                    <div class="wind" id="wind">--km/h</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

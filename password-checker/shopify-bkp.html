@@ -1,0 +1,1152 @@
+{{ 'home-page.css' | asset_url | stylesheet_tag }}
+
+{% assign collection = collections[section.settings.collection] %}
+{% if collection.products.size > 0 %}
+{% for product in collection.products limit: section.settings.products_to_show %}
+<section class="product-detais-section top-80 roast-card--{{ product.metafields.custom.background_colors }}">
+  <div class="container">
+    {% style %}
+    .product-box-heading-{{ product.id }}::after {
+    background: url({{ product.metafields.custom.heading_background_image | image_url }});
+    }
+    {% endstyle %}
+    <div class="product-detais-heading product-box-heading-{{ product.id }}">
+      <div class="product-detais-heading-1">{{ product.title }}</div>
+      <div class="product-detais-heading-2">{{ product.metafields.custom.tagline }}</div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <div class="product-detais-img">
+          {% if product.featured_image != blank %}
+          <img src="{{ product.featured_image | image_url}}" width="{{ section.settings.featured_image.width }}"
+            height="{{ section.settings.featured_image.height }}" alt="{{ product.featured_image.alt | escape }}">
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="product-detais-text">
+          <span>{{ product.description }}</span>
+          {% comment %}
+          <div class="product-detais-btn">
+            <a href="#">Add to cart</a>
+            <a href="#">custom</a>
+          </div>
+          {% endcomment %}
+          <div class="product-detais-btn">
+            <form method="post" action="/cart/add" enctype="multipart/form-data" class="product-form">
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="roast-card__button" {% unless product.available %} disabled {% endunless %}>
+                {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+              </button>
+            </form>
+            {% comment %} <a href="#">custom</a> {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endfor %}
+{% endif %}
+{% schema %}
+{
+"name": "Dynamic Product Showcase",
+"settings": [
+{
+"type": "collection",
+"id": "collection",
+"label": "Select Collection",
+"info": "Choose the collection to display products from. Each product will be shown in a separate section."
+},
+{
+"type": "range",
+"id": "products_to_show",
+"min": 1,
+"max": 10,
+"step": 1,
+"default": 4,
+"label": "Number of products to show"
+},
+{
+"type": "text",
+"id": "add_to_cart_text",
+"label": "Primary Button Text",
+"default": "VIEW PRODUCT"
+},
+{
+"type": "text",
+"id": "custom_text",
+"label": "Secondary Button Text",
+"default": "CUSTOM"
+},
+{
+"type": "url",
+"id": "custom_link",
+"label": "Secondary Button Link"
+},
+{
+"type": "header",
+"content": "Fallback Content"
+},
+{
+"type": "text",
+"id": "fallback_tagline",
+"label": "Fallback Tagline",
+"default": "HUMBLE ORIGINS, CRAFTED FOR PURPOSE"
+},
+{
+"type": "text",
+"id": "fallback_variety",
+"label": "Fallback Variety",
+"default": "CASTILLO - LIGHT ROAST"
+},
+{
+"type": "textarea",
+"id": "fallback_taste_profile",
+"label": "Fallback Taste Profile",
+"default": "BRIGHT, CITRIC ACIDITY THAT ENLIVENS THE PALATE, CONTRIBUTING TO A FRESH AND VIBRANT TASTE EXPERIENCE.
+CLEAN, JUICY, AND LINGERING AFTERTASTE."
+},
+{
+"type": "text",
+"id": "fallback_primary_notes",
+"label": "Fallback Primary Notes",
+"default": "WATERMELON, RED WINE, CHOCOLATE."
+},
+{
+"type": "text",
+"id": "fallback_process",
+"label": "Fallback Process",
+"default": "EXTENDED NATURAL"
+},
+{
+"type": "text",
+"id": "fallback_origin",
+"label": "Fallback Origin",
+"default": "BARRIO LA SIERRA, MEDELLÍN"
+},
+{
+"type": "text",
+"id": "fallback_altitude",
+"label": "Fallback Altitude",
+"default": "1,850 - 1,950 MASL (METERS ABOVE SEA LEVEL)"
+},
+{
+"type": "text",
+"id": "fallback_roast_type",
+"label": "Fallback Roast Type",
+"default": "SCANDINAVIAN"
+},
+{
+"type": "text",
+"id": "no_products_message",
+"label": "No Products Message",
+"default": "No products found in the selected collection."
+}
+],
+"presets": [
+{
+"name": "Dynamic Product Showcase"
+}
+]
+}
+{% endschema %}
+
+<!-- =============================================================================================================== -->
+/* @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap'); */
+body {
+font-family: "Placard Next", sans-serif;
+font-weight: 400;
+color: #000;
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+overflow-x: hidden;
+}
+
+/* Container */
+.container {
+width: 100%;
+margin-left: auto;
+margin-right: auto;
+padding-left: 15px;
+padding-right: 15px;
+box-sizing: border-box;
+}
+
+/* Row */
+.row {
+/* display: flex;
+flex-wrap: wrap; */
+/* margin-left: -15px;
+margin-right: -15px; */
+}
+.row {
+display: flex;
+flex-wrap: wrap;
+justify-content: flex-start;
+}
+
+.product-box {
+flex: 1 1 calc(25% - 20px); /* 4 in a row */
+box-sizing: border-box;
+}
+
+@media (max-width: 992px) {
+.product-box {
+flex: 1 1 calc(50% - 20px); /* 2 in a row */
+}
+}
+
+@media (max-width: 576px) {
+.product-box {
+flex: 1 1 100%; /* 1 in a row */
+}
+}
+
+/* Column (by default full width) */
+.col {
+flex: 1 0 0%;
+padding-left: 15px;
+padding-right: 15px;
+}
+
+/* Fixed size columns */
+.col-1 { flex: 0 0 8.33%; max-width: 8.33%; }
+.col-2 { flex: 0 0 16.66%; max-width: 16.66%; }
+.col-3 {
+/* flex: 0 0 25%; */
+max-width: 25%; }
+.col-4 { flex: 0 0 33.33%; max-width: 33.33%; }
+.col-5 { flex: 0 0 41.66%; max-width: 41.66%; }
+.col-6 { flex: 0 0 50%; max-width: 50%; }
+.col-7 { flex: 0 0 58.33%; max-width: 58.33%; }
+.col-8 { flex: 0 0 66.66%; max-width: 66.66%; }
+.col-9 { flex: 0 0 75%; max-width: 75%; }
+.col-10 { flex: 0 0 83.33%; max-width: 83.33%; }
+.col-11 { flex: 0 0 91.66%; max-width: 91.66%; }
+.col-12 { flex: 0 0 100%; max-width: 100%; }
+
+/* Responsive Breakpoints (Bootstrap style) */
+@media (min-width: 576px) {
+.container { max-width: 540px; }
+}
+@media (min-width: 768px) {
+.container { max-width: 720px; }
+}
+@media (min-width: 992px) {
+.container { max-width: 960px; }
+}
+@media (min-width: 1200px) {
+.container { max-width: 1140px; }
+}
+@media (min-width: 1400px) {
+.container { max-width: 1320px; }
+}
+
+
+/* ---banner css--- */
+.banner-img img {
+width: 100%;
+height: 100%;
+/* object-fit: cover; */
+display: block;
+}
+.section_wraper {
+/* background: #c1e600; */
+background: #f2958b;
+position: relative;
+top: 65px;
+}
+.banner-heading {
+font-family: "Placard Next", sans-serif;
+font-weight: 400;
+font-size: 66px;
+text-align: center;
+/* margin-bottom: 100px; */
+/* margin-bottom: 80px; */
+color: #fff;
+padding-top: 15px;
+}
+
+.banner-text {
+font-family: "Placard Next Condensed", sans-serif;
+/* font-size: 40px; */
+font-size:50px;
+/* font-weight: 400; */
+line-height: 1em;
+}
+section.banner-section .col-7 {
+flex: 0 0 55%;
+max-width: 55%;
+}
+
+section.banner-section .col-5 {
+flex: 0 0 45%;
+max-width: 45%;
+}
+
+.banner-btn a {
+background: #fff;
+color: #000;
+text-decoration: none;
+border-radius: 50px;
+padding: 10px 15px;
+font-size: 28px;
+line-height: normal;
+display: inline-block;
+width: 150px;
+text-align: center;
+}
+
+.banner-btn {
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+/* ========================= */
+font-family:"Placard Next Condensed", sans-serif;
+}
+.banner-text-area {
+padding-left: 20px;
+padding-bottom: 20px;
+}
+section.banner-section .row {
+align-items: flex-end;
+}
+.banner-section-area {
+position: relative;
+z-index: 1;
+padding-top: 50px;
+}
+.banner-section-area::after {
+content: "";
+position: absolute;
+/* background: url(./img/banner-bg.png); */
+background-size: contain;
+background-repeat: no-repeat;
+background-position: top;
+width: 100%;
+height: 80%;
+top: 35px;
+left: 0;
+z-index: -1;
+}
+
+
+/* ---product section css--- */
+.product-box-img img {
+width: 278px;
+height: 417px;
+}
+.product-box-heading {
+font-size: 40px;
+color: #000;
+position: relative;
+text-align: center;
+z-index: 1;
+/* width: 70%; */
+width: 46%;
+margin: 0 auto;
+line-height: 0.9em;
+margin-top: -55px;
+font-family:"Placard Next Condensed", sans-serif;
+}
+.product-box-heading::after {
+content: "";
+position: absolute;
+/* background: url(./img/heading-bg-1.png); */
+/* background-size: contain;
+background-repeat: no-repeat;
+background-position: center; */
+height: 160px;
+width: 320px;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+z-index: -1;
+}
+.product-box-img {
+text-align: center;
+}
+.product-box {
+text-align: center;
+}
+.product-box-text {
+padding-top: 55px;
+text-transform:Uppercase;
+}
+.product-box-text span {
+display: block;
+font-size: 22px;
+letter-spacing: 1.4px;
+}
+.product-box-btn a {
+background: #fff;
+color: #000;
+text-decoration: none;
+border-radius: 50px;
+padding: 15px 30px;
+font-size: 28px;
+line-height: normal;
+display: inline-block;
+text-align: center;
+margin-top: 10px;
+text-transform:Uppercase;
+font-family: "Placard Next Condensed", sans-serif;
+}
+.product-box {
+text-align: center;
+background: rgb(255, 194, 245);
+padding: 80px 20px 20px;
+/* min-height: 790px; */
+min-height:auto;
+}
+.product_character-heading {
+position: absolute;
+/* font-size: 64px; */
+font-size: 57px;
+left: 50%;
+transform: translateX(-50%);
+top: 30px;
+text-align: center;
+color: #fff;
+text-transform:Uppercase;
+}
+section.product_character_section {
+position: relative;
+/* margin-top: 30px; */
+}
+.product-box.product-box-2 {
+background: #53d0a5;
+}
+.product-box.product-box-2 .product-box-heading::after{
+background: url(./img/heading-bg-2.png);
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+}
+.product-box.product-box-3 {
+background: #5ce1e6;
+}
+.product-box.product-box-3 .product-box-heading::after{
+background: url(./img/heading-bg-3.png);
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+}
+.product-box.product-box-4 {
+background: #7272f9;
+}
+.product-box.product-box-4 .product-box-heading::after{
+background: url(./img/heading-bg-4.png);
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+}
+
+/* ---products details css--- */
+
+section.product-detais-section {
+/* background: #ffc2f5; */
+padding: 115px 0 0;
+}
+.product-detais-heading-1 {
+font-size: 55px;
+}
+.product-detais-heading-2 {
+font-size: 45px;
+}
+.product-detais-heading {
+position: relative;
+z-index: 1;
+width: fit-content;
+font-family: "Placard Next Condensed", sans-serif;
+}
+.product-detais-heading::after {
+content: "";
+position: absolute;
+/* background: url(./img/heading-bg-1.png); */
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+z-index: -1;
+width: 673px;
+height: 367px;
+}
+.product-detais-img img {
+width: 100%;
+height:775px;
+object-fit:cover;
+padding-right: 64px;
+}
+/* Large screens (laptops/desktops) */
+@media (max-width: 1200px) {
+.product-detais-img img {
+height: 650px;
+/* height: 440px; */
+width: 373px;
+margin-left: -30px;
+}
+.product-detais-text{
+margin-left: -15px !important;
+}
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 992px) {
+.product-detais-img img {
+height: 500px;
+height: 440px;
+margin-left: 30px;
+}
+}
+
+/* Small screens (mobile landscape) */
+@media (max-width: 768px) {
+.product-detais-img img {
+height: 400px;
+height: 440px;
+margin-left: 30px;
+}
+}
+
+/* Extra small screens (mobile portrait) */
+@media (max-width: 480px) {
+.product-detais-img img {
+height: 300px;
+height: 440px;
+/* margin-left: 30px; */
+margin-left:0;
+}
+}
+section.product-detais-section .row {
+align-items: flex-end;
+}
+.product-detais-text span {
+/* font-size: 29px; */
+font-size: 1.667rem;
+display: block;
+line-height: 1.3em;
+letter-spacing: 1.7px;
+font-family: "Placard Next Condensed", sans-serif;
+}
+.product-detais-btn a {
+background: #fff;
+color: #000;
+text-decoration: none;
+border-radius: 50px;
+padding: 12px 15px;
+/* font-size: 32px; */
+font-size:2.2rem;
+line-height: normal;
+display: inline-block;
+width: 180px;
+text-align: center;
+font-family:"Placard Next Condensed", sans-serif;
+text-transform: Uppercase;
+}
+.product-detais-btn {
+margin-top: 30px;
+display: flex;
+gap: 50px;
+}
+.product-detais-text {
+margin-bottom: 80px;
+margin-left: -30px;
+}
+.product-detais-img {
+position: relative;
+z-index: 9;
+margin-top: -90px;
+}
+/* section.product-detais-section.product-detais-section-2 {
+background: #53d0a5;
+}
+section.product-detais-section.product-detais-section-3 {
+background: #5ce1e6;
+}
+section.product-detais-section.product-detais-section-4 {
+background: #7272f9;
+} */
+
+
+section.product-detais-section.product-detais-section-2 .product-detais-heading::after {
+background: url(./img/heading-bg-2.png);
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+}
+
+section.product-detais-section.product-detais-section-3 .product-detais-heading::after {
+background: url(./img/heading-bg-3.png);
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+}
+
+section.product-detais-section.product-detais-section-4 .product-detais-heading::after {
+background: url(./img/heading-bg-4.png);
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+}
+
+section.video-section video {
+width: 100%;
+object-fit: cover;
+height: auto;
+object-position: center;
+}
+section.video-section {
+background: #FFC2F5;
+position: relative;
+}
+
+.video-heading {
+font-size: 50px;
+padding: 30px 0 5px;
+}
+
+.video-logo {
+position: absolute;
+right: 0;
+top: 0;
+z-index: 1;
+}
+
+.video-logo img {
+width: 195.495px;
+height: 195.495px;
+object-fit: fill;
+opacity: 0.5;
+}
+.container.cofee-text-cont {
+position: absolute;
+width: 100%;
+bottom: 50px;
+left: 50%;
+transform: translateX(-50%);
+/* color: #fff; */
+/* font-size: 32px; */
+font-size: 40px;
+line-height: 1em;
+font-family:"Placard Next Condensed", sans-serif;
+}
+.video-box {
+position: relative;
+}
+
+
+/* .video-box::after {
+content: "";
+position: absolute;
+width: 100%;
+height: 100%;
+background: rgb(255 194 245 / 60%);
+left: 0;
+top: 0;
+} */
+
+
+/* ---responsive css--- */
+@media screen and (max-width: 1560px){
+
+.product_character-heading {
+font-size: 55px;
+}
+.product-detais-heading-1 {
+font-size: 50px;
+}
+.product-detais-heading-2 {
+font-size: 40px;
+padding-bottom: 10px;
+}
+.product-detais-heading {
+padding-left: 40px;
+}
+.product-detais-heading::after {
+width: 633px;
+height: 280px;
+}
+
+}
+
+@media screen and (max-width: 1400px){
+.banner-text {
+font-size: 32px;
+}
+.banner-btn a {
+font-size: 24px;
+width: 120px;
+}
+.product_character-heading {
+font-size: 47px;
+}
+.product-box-heading::after {
+height: 130px;
+width: 290px;
+}
+.product-box-btn a {
+padding: 10px 26px;
+font-size: 24px;
+}
+.product-detais-heading-2 {
+font-size: 30px;
+padding-bottom: 10px;
+}
+.product-detais-heading-1 {
+font-size: 40px;
+}
+.product-detais-text span {
+font-size: 22px;
+letter-spacing: 1.5px;
+}
+.product-detais-btn a {
+padding: 10px 10px;
+font-size: 26px;
+width: 160px;
+}
+.product-detais-img {
+margin-top: -70px;
+}
+.product-detais-heading::after {
+width: 593px;
+height: 230px;
+}
+}
+
+@media screen and (max-width: 1200px){
+.banner-text {
+font-size: 28px;
+}
+.banner-btn a {
+font-size: 20px;
+width: 96px;
+}
+.banner-heading {
+margin-bottom: 40px;
+}
+.product_character-heading {
+font-size: 39px;
+}
+.product-box-img img {
+width: 208px;
+height: 327px;
+object-fit: contain;
+}
+.product-box-heading {
+font-size: 28px;
+}
+.product-box-heading::after {
+height: 110px;
+width: 290px;
+}
+.product-box-text span {
+font-size: 20px;
+letter-spacing: 1px;
+}
+.product-detais-text span {
+font-size: 20px;
+letter-spacing: 1px;
+}
+.product-detais-heading-1 {
+font-size: 36px;
+}
+.product-detais-heading-2 {
+font-size: 26px;
+padding-bottom: 10px;
+}
+.product-detais-heading::after {
+width: 583px;
+height: 180px;
+}
+.product-detais-btn a {
+padding: 9px 10px;
+font-size: 2.2rem;
+width: 130px;
+}
+.product-detais-btn {
+margin-top: 15px;
+gap: 20px;
+}
+}
+
+@media screen and (max-width: 991px){
+.banner-section-area [class*="col-"] {
+flex: 0 0 100% !important;
+max-width: 100% !important;
+}
+.banner-heading {
+font-size: 48px;
+}
+.banner-heading {
+margin-bottom: 20px;
+}
+.banner-section-area::after {
+background: #F19797 !important;
+height: 20%;
+}
+.banner-text-area {
+padding-left: 0;
+padding-top: 20px;
+}
+.banner-btn {
+justify-content: flex-start;
+margin-top: 20px;
+column-gap: 10px;
+}
+section.product_character_section [class*="col-"] {
+flex: 0 0 50%;
+max-width: 50%;
+}
+.product_character-heading {
+font-size: 30px;
+line-height: 1.1em;
+}
+.product-box {
+padding: 50px 20px 20px;
+}
+section.product_character_section [class*="col-"] {
+flex: 0 0 100%;
+max-width: 100%;
+}
+.product-box {
+padding: 20px 20px 20px;
+}
+section.product_character_section [class*="col-"]:first-child .product-box {
+padding-top: 65px;
+}
+section.product-detais-section [class*="col-"] {
+flex: 0 0 100%;
+max-width: 100%;
+}
+.product-detais-heading {
+padding-left: 0;
+text-align: center;
+margin: 45px auto;
+}
+.product-detais-heading::after {
+width: 593px;
+height: 210px;
+}
+.product-detais-text {
+margin-bottom: 30px;
+margin-top: -120px;
+margin-left: 0;
+}
+.product-detais-img {
+margin-top: -130px;
+}
+.container.cofee-text-cont {
+font-size: 27px;
+}
+}
+
+@media screen and (max-width: 767px){
+.banner-section-area::after {
+height: 70%;
+}
+.banner-heading {
+font-size: 38px;
+}
+
+.product-detais-img {
+margin-top: -100px;
+}
+.product-detais-text {
+margin-top: -90px;
+}
+.product-detais-heading::after {
+width: 500px;
+height: 210px;
+}
+.video-heading {
+font-size: 40px;
+text-align: center;
+}
+.container.cofee-text-cont {
+position: unset;
+width: auto;
+transform: unset;
+font-size: 20px;
+padding-top: 15px;
+padding-bottom: 15px;
+}
+.video-logo img {
+width: 135px;
+height: 145px;
+object-fit: cover;
+}
+.video-logo {
+top: 87px;
+}
+.video-box-text {
+text-align: center;
+color: #000;
+}
+
+
+}
+
+@media screen and (max-width: 575px){
+.product-detais-heading::after {
+width: 410px;
+}
+
+.product-detais-img {
+margin-top: -75px;
+}
+.product-detais-text {
+margin-top: -75px;
+}
+.banner-heading {
+font-size: 30px;
+}
+.product_character-heading {
+width: 100%;
+}
+}
+
+@media screen and (max-width: 480px){
+.banner-heading {
+font-size: 33px;
+line-height: 1em;
+}
+.banner-text {
+font-size: 24px;
+}
+.product-detais-heading::after {
+width: 320px;
+}
+.product-detais-heading-1 {
+font-size: 30px;
+}
+.product-detais-heading-2 {
+font-size: 22px;
+padding-bottom: 10px;
+}
+.product-detais-img {
+margin-top: -60px;
+}
+.product-detais-text {
+margin-top: -55px;
+}
+.video-logo img {
+width: 65px;
+height: 65px;
+object-fit: cover;
+}
+.video-heading {
+font-size: 30px;
+text-align: center;
+padding: 10px 0 5px;
+}
+.video-logo {
+top: 55px;
+}
+}
+
+/* ==================================================== */
+.roast-card--pink {
+background: #ffc2f5;
+}
+
+.roast-card--lime {
+background: #53d0a5;
+}
+
+.roast-card--sky-blue {
+background: #5ce1e6;
+}
+
+.roast-card--royal-blue {
+background: #7272f9;
+}
+
+.top-80{
+position:relative;
+top: 65px;
+}
+
+
+/*
+=========================================================================================================================
+*/
+/* -------------------------- SHOP PAGE CSS ------------------------------------------------------ */
+/*
+=========================================================================================================================
+*/
+
+.collection-hero__breadcrumb {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 1rem;
+margin-bottom: clamp(1rem, 3vw, 2rem);
+font-size: 1.6rem;
+color: rgba(255, 255, 255, 0.8);
+
+}
+
+.banner-heading-shop {
+font-family: "Placard Next", sans-serif;
+font-weight: 400;
+/* font-size: 66px; */
+font-size:clamp(32px, 5vw, 66px);
+text-align: center;
+margin-bottom: 20px;
+/* margin-bottom: clamp(10px, 3vw, 20px); */
+/* margin-bottom: 5px; */
+color: #fff;
+/* padding-top: 50px; */
+}
+
+.banner-btn-shop {
+display: flex;
+justify-content: center;
+margin-top: 0px;
+/* ========================= */
+font-family:"Placard Next Condensed", sans-serif;
+gap: 10px;
+margin-bottom: 176px;
+}
+.banner-btn-shop a {
+background: #fff;
+color: #000;
+text-decoration: none;
+border-radius: 50px;
+padding: 10px 15px;
+font-size: 28px;
+line-height: 1.7rem;
+display: inline-block;
+width: 160px;
+text-align: center;
+}
+.shop-page{
+min-height:451px;
+/* min-height:auto; */
+}
+
+
+/*
+==========================================================================================================================
+*/
+/* --------------------------------- Product details Page ------------------------------------------------ */
+/*
+==========================================================================================================================
+*/
+
+.roast-card__button{
+background: #fff;
+color: #000;
+text-decoration: none;
+border-radius: 50px;
+border:none;
+padding: 12px 15px;
+font-size: 2.2rem;
+line-height: normal;
+display: inline-block;
+width: 180px;
+text-align: center;
+font-family: 'Placard Next Condensed', sans-serif;
+text-transform: Uppercase;
+}
+
+.product-qty {
+width: 80px;
+padding: 8px 10px;
+border: 1px solid #ddd;
+border-radius: 6px;
+font-size: 16px;
+text-align: center;
+appearance: 'textfield'; /* Chrome, Safari, Edge */
+-moz-appearance: 'textfield'; /* Firefox */
+transition: all 0.3s ease;
+}
+
+.product-qty:focus {
+border-color: #000;
+outline: none;
+box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.product-qty::-webkit-inner-spin-button,
+.product-qty::-webkit-outer-spin-button {
+-webkit-appearance: none; /* Hide default arrows */
+margin: 0;
+}
+
+.about_hero__title{
+padding:60px;
+font-size:25px:
+}
+/* .coffee-roast-filter{
+padding: 10px;
+text-align: right;
+}
+.coffee-roast-filter label {
+font-size: 1.2rem;
+} */
+/* Filter container */
+.coffee-roast-filter {
+margin: 20px 0;
+text-align: right;
+font-family: "Placard Next", sans-serif;
+}
+
+/* Filter label */
+.coffee-roast-filter label {
+font-size: 1.3rem;
+color: #000;
+margin-right: 15px;
+font-weight: 500;
+}
+
+/* Filter select */
+#roastFilter {
+font-size: 1.2rem;
+padding: 10px 15px;
+border: 2px solid #000;
+border-radius: 50px;
+background-color: #fff;
+color: #000;
+min-width: 180px;
+appearance: none; /* remove default arrow */
+-webkit-appearance: none;
+-moz-appearance: none;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+/* Hover & focus states */
+#roastFilter:hover,
+#roastFilter:focus {
+border-color: #53d0a5; /* matching your green accent */
+outline: none;
+box-shadow: 0 0 10px rgba(83, 208, 165, 0.3);
+}
+
+/* Optional: custom arrow */
+#roastFilter {
+background-image: url('data:image/svg+xml;utf8,<svg fill="%23000" height="24" viewBox="0 0 24 24" width="24"
+  xmlns="http://www.w3.org/2000/svg">
+  <path d="M7 10l5 5 5-5z" />
+</svg>');
+background-repeat: no-repeat;
+background-position: right 15px center;
+background-size: 16px;
+padding-right: 40px;
+}
+
+@media(max-width: 480px){
+.container, section, .hero_start_box {
+padding-left: 1rem !important;
+padding-right: 1rem !important;
+max-width: 100% !important;
+overflow-x: hidden;
+}
+}

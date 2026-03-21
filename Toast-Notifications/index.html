@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Toaster Notification</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <h2>Modern Toaster Notification app</h2>
+
+    <button class="btn" onclick="showToast( 'Success! your task is completed.', 'success')">Success</button>
+    <button class="btn" onclick="showToast('Errro! Something Went Wrong.', 'error')">Error</button>
+    <button class="btn" onclick="showToast('Here is some usful information.', 'info')">info</button>
+    <button class="btn" onclick="showToast('Warning! Please check this again.', 'warning')">Warning</button>
+
+    <div class="toast-wrapper" id="toastBox"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
