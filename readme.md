@@ -13,7 +13,6 @@ This repository contains 6 JavaScript mini projects:
 - Glowing Navbar
 - Neon Cursor & Cards
 
-## Live Demo
 
 ## Tech Used
 
