@@ -3,7 +3,7 @@
 This repository contains 6 JavaScript mini projects:
 
 ## Projects
-- Collection of small projects focused on core JavaScript concepts
+Collection of small projects focused on core JavaScript concepts
 - Password checker
 - QR Code Generator
 - Random Password Generator
