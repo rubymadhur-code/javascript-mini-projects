@@ -10,6 +10,8 @@ This repository contains 6 JavaScript mini projects:
 - Toast Notifications
 - Voice Converter
 - Weather App
+- Glowing Navbar
+- Neon Cursor & Cards
 
 ## Live Demo
 

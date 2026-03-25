@@ -1,0 +1,113 @@
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        cursor: none;
+    }
+
+    body {
+        background: #020202;
+        font-family: Arial, sans-serif;
+        padding: 50px;
+        color: white;
+    }
+
+    /* Cursor */
+    .cursor {
+        width: 18px;
+        height: 18px;
+        background: #00f7ff;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        box-shadow:
+            0 0 20px #00f7ff,
+            0 0 40px #00f7ff,
+            0 0 80px #00f7ff;
+    }
+
+    /* Trail */
+    .trail {
+        position: fixed;
+        width: 14px;
+        height: 14px;
+        background: #00f7ff;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0.5;
+        filter: blur(6px);
+        transform: translate(-50%, -50%);
+    }
+
+    /* Container */
+    .container {
+        display: flex;
+        gap: 40px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 100px;
+    }
+
+    /* Neon Card */
+    .card {
+        width: 280px;
+        padding: 25px;
+        border-radius: 15px;
+        background: #0a0a0a;
+        transition: 0.4s;
+        border: 1px solid #111;
+    }
+
+    /* Neon Glow (Main Part 🔥) */
+    .card[data-color="cyan"]:hover {
+        box-shadow:
+            0 0 10px #00f7ff,
+            0 0 20px #00f7ff,
+            0 0 40px #00f7ff,
+            0 0 80px #00f7ff;
+    }
+
+    .card[data-color="pink"]:hover {
+        box-shadow:
+            0 0 10px #ff00c8,
+            0 0 20px #ff00c8,
+            0 0 40px #ff00c8,
+            0 0 80px #ff00c8;
+    }
+
+    .card[data-color="green"]:hover {
+        box-shadow:
+            0 0 10px #00ff88,
+            0 0 20px #00ff88,
+            0 0 40px #00ff88,
+            0 0 80px #00ff88;
+    }
+
+    .card:hover {
+        transform: translateY(-10px) scale(1.05);
+    }
+
+    /* Profile */
+    .profile {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-bottom: 15px;
+    }
+
+    /* Text */
+    .text {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .user {
+        font-weight: bold;
+    }
+
+    .role {
+        font-size: 12px;
+        opacity: 0.6;
+    }
