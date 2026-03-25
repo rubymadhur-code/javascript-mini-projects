@@ -1,6 +1,6 @@
 # JavaScript Mini Projects
 
-This repository contains 6 JavaScript mini projects:
+This repository contains 8 JavaScript mini projects:
 
 ## Projects
 Collection of small projects focused on core JavaScript concepts
