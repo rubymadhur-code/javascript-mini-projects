@@ -3,7 +3,9 @@
 This repository contains 8 JavaScript mini projects:
 
 ## Projects
+
 Collection of small projects focused on core JavaScript concepts
+
 - Password checker
 - QR Code Generator
 - Random Password Generator
@@ -12,10 +14,9 @@ Collection of small projects focused on core JavaScript concepts
 - Weather App
 - Glowing Navbar
 - Neon Cursor & Cards
- 
+- Custom Cursor
 
- 💻 Live Demo: [https://github.com/rubymadhur-code/javascript-mini-projects](https://rubymadhur-code.github.io/javascript-mini-projects/)
-
+💻 Live Demo: [https://github.com/rubymadhur-code/javascript-mini-projects](https://rubymadhur-code.github.io/javascript-mini-projects/)
 
 ## Tech Used
 
